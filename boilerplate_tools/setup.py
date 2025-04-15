@@ -7,10 +7,13 @@ long_description = (this_directory / "README.md").read_text()
 
 setup(
     name="bolerplate_tools",  # The package name users will use to install
-    version="0.1.0",
+    version="0.1.1",
     packages=find_packages(where="src"),  # Look for packages in the "src" folder
     package_dir={"": "src"},  # Map root of the package to "src"
     python_requires=">=3.12",
+    
+    
+
     install_requires=[
         "omegaconf"
     ],
@@ -19,4 +22,5 @@ setup(
     long_description_content_type="text/markdown",
     author="Rodion Khvorostov",
     author_email="rodion.khvorostov@jetbrains.com",
+    url="https://github.com/RodionfromHSE/custom_python_tools.git"
 )
