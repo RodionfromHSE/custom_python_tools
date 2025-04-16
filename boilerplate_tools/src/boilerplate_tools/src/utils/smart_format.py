@@ -1,7 +1,10 @@
 """Utility functions for string formatting and template variable management."""
 from typing import Dict, Any, List
 import re
-import warnings
+import logging
+
+# Configure logging
+logger = logging.getLogger(__name__)
 
 
 def smart_format(template: str, variables: Dict[str, Any]) -> str:
@@ -10,7 +13,7 @@ def smart_format(template: str, variables: Dict[str, Any]) -> str:
     
     This function performs substitution of variables in a template string,
     requiring all variables to be present in the provided dictionary.
-    It also warns about any unused variables.
+    It also logs a warning about any unused variables.
     
     Args:
         template: The template string with placeholders like {variable}
@@ -25,7 +28,7 @@ def smart_format(template: str, variables: Dict[str, Any]) -> str:
     Examples:
         >>> smart_format("Hello, {name}!", {"name": "World"})
         'Hello, World!'
-        >>> smart_format("Hello, {name}!", {"name": "World", "unused": "value"})  # Warns about unused variable
+        >>> smart_format("Hello, {name}!", {"name": "World", "unused": "value"})  # Logs warning about unused variable
         'Hello, World!'
         >>> smart_format("Hello, {name}!", {})  # Raises KeyError
         Traceback (most recent call last):
@@ -40,15 +43,14 @@ def smart_format(template: str, variables: Dict[str, Any]) -> str:
         if var not in variables:
             raise KeyError(f"Missing required template variable: '{var}'")
     
-    # Check for unused variables and issue warnings
+    # Check for unused variables and log warnings
     used_variables = set(required_variables)
     all_variables = set(variables.keys())
     unused_variables = all_variables - used_variables
     
     if unused_variables:
-        warnings.warn(
-            f"Unused variables provided that are not in the template: {', '.join(unused_variables)}",
-            UserWarning
+        logger.warning(
+            f"Unused variables provided that are not in the template: {', '.join(unused_variables)}"
         )
     
     # Use standard string formatting
